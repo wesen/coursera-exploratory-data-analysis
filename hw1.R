@@ -1,17 +1,29 @@
 library(tidyverse)
+library(lubridate)
+library(ggplot2)
 
-data <- read_delim("data/household_power_consumption.txt",
-                   delim=";",
-                   col_types=cols(
-                     Date = col_date(format = "%d/%m/%Y"),
-                     Time = col_time(format = ""),
-                     Global_active_power = col_double(),
-                     Global_reactive_power = col_double(),
-                     Voltage = col_double(),
-                     Global_intensity = col_double(),
-                     Sub_metering_1 = col_double(),
-                     Sub_metering_2 = col_double(),
-                     Sub_metering_3 = col_double()
-                   ),
-                   n_max=1000
-                   )
+# assume each entry costs 20 bytes
+estimate <- 2075259 * 9 * 20
+
+# this would take around 380 MB of memory
+
+data <- read_delim(
+  "data/household_power_consumption.txt",
+  delim = ";",
+  col_types = cols(
+    Date = col_date(format = "%d/%m/%Y"),
+    Time = col_time(format = ""),
+    Global_active_power = col_double(),
+    Global_reactive_power = col_double(),
+    Voltage = col_double(),
+    Global_intensity = col_double(),
+    Sub_metering_1 = col_double(),
+    Sub_metering_2 = col_double(),
+    Sub_metering_3 = col_double()
+  )
+) %>%
+  filter(Date >= ymd("2007-02-01"), Date < ymd("2007-03-01"))
+
+hist(data$Global_active_power, col="red", xlab="Global Active Power (kilowatts)")
+dev.copy(png, file="plot1.png")
+dev.off()
