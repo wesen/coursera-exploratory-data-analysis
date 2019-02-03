@@ -20,4 +20,4 @@
 
 ### Plot 4
 
-![plot of chunk unnamed-chunk-5](plot4.png)
+![plot of chunk unnamed-chunk-5](plot-4a.png)
